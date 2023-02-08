@@ -6,10 +6,11 @@ const {db } = require('../config/firebase/firebaseConfig');
 
 router.post('/', async (req, res) => {
     try {
-        
+
         const querySnapshot = await getDocs(collection(db, 'account'));
         querySnapshot.forEach((doc) => {
-            if(doc.username !== req.params.username && doc.password !== req.params.password) return res.json({ message: 'Sai tài khoản'});
+            
+            if(doc.data().username != req.body.username || doc.data().password !== req.body.password) return res.json({ message: 'Sai tài khoản'});
             return res.status(200).json({ message: 'Đăng nhập thành công'})
         })
 
