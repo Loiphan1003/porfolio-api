@@ -8,8 +8,8 @@ async function main(name, email, message){
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
-      port: 465,
-      secure: true, // true for 465, false for other ports
+      port: 587,
+      secure: false, // true for 465, false for other ports
       auth: {
         user: 'phanvuloi.it@gmail.com', // generated ethereal user
         pass: 'yjkfgmytgdrgrquq', // generated ethereal password
@@ -20,8 +20,8 @@ async function main(name, email, message){
       },
     });
   
-    data = {
-        from: '"Loi Phan 👻" <phanvuloi1003@gmail.com>', // sender address
+    const data = {
+        from: '"Loi Phan" <phanvuloi1003@gmail.com>', // sender address
         to: "phanvuloi.it@gmail.com", // list of receivers
         subject: "Mail from porfolio", // Subject line
         // text: `From ${name} Email: ${email}Nội dung: ${message}`, // plain text body
@@ -37,8 +37,10 @@ async function main(name, email, message){
           transporter.sendMail(data, function (err, success) {
             if(err) {
                 console.log("Err ", err);
+                return false;
             } else {
                 console.log("success");
+                return true;
             }
         });
         }
@@ -49,8 +51,8 @@ async function main(name, email, message){
 // gửi mail
 router.post('/send', (req, res) => {
     try {
-        main(req.body.name, req.body.email, req.body.message);
-        res.status(200).json({message: 'Thành công!'})
+          main(req.body.name, req.body.email, req.body.message)
+          res.status(200).json({message: 'Thành công!'})
     } catch (error) {
         res.status(404).json({message: 'Error'})
     }
